@@ -187,7 +187,7 @@ def gen(n: int):
 
 
 def gen_meta(i: Info, ipfs_hash: str):
-    with open(os.path.join(META_DIR, f'{i.token_id}.json'), 'w') as meta:
+    with open(os.path.join(META_DIR, f'{i.token_id}'), 'w') as meta:
         mt = {
             "name": i.display_name(),
             "image": f'ipfs://{ipfs_hash}/{i.token_id}.svg',
