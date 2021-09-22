@@ -269,7 +269,7 @@ def gen_svg(i: Info):
 
 
 def run():
-    tokens = gen(ALPH_COUNT * ALPH_COUNT)# * 10)
+    tokens = gen(ALPH_COUNT * ALPH_COUNT * 10)
     for t in tokens:
         gen_svg(t)
 
