@@ -272,6 +272,7 @@ def run():
     tokens = gen(ALPH_COUNT * ALPH_COUNT * 10)
     for t in tokens:
         gen_svg(t)
+        gen_meta(t, "QmfBACXSU9C8bjVfMaAeuVETohueqBCCZCFTx78AkcepRV")
 
 
 def init():
