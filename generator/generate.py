@@ -166,10 +166,12 @@ class Info:
 
 
 def gen(n: int):
-    for tok_id in range(n):
-        digit: int = tok_id % 10
-        le: int = CHR_START + (tok_id // 10) % ALPH_COUNT
-        be: int = CHR_START + (tok_id // 10 // ALPH_COUNT) % ALPH_COUNT
+    numbers = list(range(n))
+    random.shuffle(numbers)
+    for tok_id, noise in enumerate(numbers):
+        digit: int = noise % 10
+        le: int = CHR_START + (noise // 10) % ALPH_COUNT
+        be: int = CHR_START + (noise // 10 // ALPH_COUNT) % ALPH_COUNT
         color_set = random.choice(COLORS)
         color_base = random.randint(0, len(color_set) - 2)
         yield Info(
@@ -237,34 +239,34 @@ def gen_svg(i: Info):
     height = 200
     aspect = width / height
 
-    with open(os.path.join(IMG_DIR, f'{i.token_id}.svg'), 'w') as svg:
-        borders = []
-        for b in range(i.border_count):
-            gap = 5 + b
-            borders.append(f'<rect x="{gap}%" y="{gap*aspect}%" width="{100 - gap * 2}%" height="{100  - gap * 2 * aspect}%" style="fill-opacity:0;stroke-width:1;stroke:{i.text_color};"/>')
-        borders = '\n'.join(borders)
+    borders = []
+    for b in range(i.border_count):
+        gap = 5 + b
+        borders.append(f'<rect x="{gap}%" y="{gap*aspect}%" width="{100 - gap * 2}%" height="{100  - gap * 2 * aspect}%" style="fill-opacity:0;stroke-width:1;stroke:{i.text_color};"/>')
+    borders = '\n'.join(borders)
 
-        xml = f"""
-        <svg viewBox="0 0 {width} {height}" style="background-color: {i.base_color}" xmlns="http://www.w3.org/2000/svg">
-            <style>
-                .subtext {{ 
-                    font: {i.font_style} 10px {i.font_family};
-                    fill: {i.text_color};
-                    }}
-                .primary {{
-                    font: {i.font_style} 24px {i.font_family}; 
-                    fill: {i.text_color};
-                    }}
-            </style>
-            {borders}
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="primary">
-                {i.display_name()}
-            </text>
-            <text x="50%" y="55%" dominant-baseline="hanging" text-anchor="middle" class="subtext">
-                ({i.trait})
-            </text>
-        </svg>
-        """
+    xml = f"""
+    <svg viewBox="0 0 {width} {height}" style="background-color: {i.base_color}" xmlns="http://www.w3.org/2000/svg">
+        <style>
+            .subtext {{ 
+                font: {i.font_style} 10px {i.font_family};
+                fill: {i.text_color};
+                }}
+            .primary {{
+                font: {i.font_style} 24px {i.font_family}; 
+                fill: {i.text_color};
+                }}
+        </style>
+        {borders}
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="primary">
+            {i.display_name()}
+        </text>
+        <text x="50%" y="55%" dominant-baseline="hanging" text-anchor="middle" class="subtext">
+            ({i.trait})
+        </text>
+    </svg>
+    """
+    with open(os.path.join(IMG_DIR, f'{i.token_id}.svg'), 'w') as svg:
         svg.write(xml)
 
 
@@ -272,7 +274,7 @@ def run():
     tokens = gen(ALPH_COUNT * ALPH_COUNT * 10)
     for t in tokens:
         gen_svg(t)
-        gen_meta(t, "QmfBACXSU9C8bjVfMaAeuVETohueqBCCZCFTx78AkcepRV")
+        gen_meta(t, "QmQpxMKxbTceaNSL8theJYJRGYJWJ1FnTYgPtEbzdifYdA")
 
 
 def init():
